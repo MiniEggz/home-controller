@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+import requests
+
+def blightswitch():
+    requests.post("http://localhost:5000/lightswitch", data={"light_name": "Owen Bedroom"})
+
+if __name__ == "__main__":
+    blightswitch()

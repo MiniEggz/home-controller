@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import requests
+
+def lslights():
+    response = requests.post("http://localhost:5000/getlights").json()
+
+    for light_name, is_on in response.items():
+        status = "On" if is_on else "Off"
+        print(f"{light_name}: {status}")
+
+if __name__ == "__main__":
+    lslights()
