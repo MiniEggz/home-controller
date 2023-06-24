@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    {% include "head.html" %}
+    <body>
+        {% include "header.html" %}
+
+        <div class="container">
+            <div class="section">
+                <h1 class="title">{{ light_name }}</h1>
+                {% if found %}
+                {% set submit_text = "Turn Off" if is_on else "Turn On" %}
+                <div class="d-flex justify-content-center">
+                    <form class="switch-form mx-auto col-sm-4 text-center mb-2 mt-2 m-sm-0" action="/lightswitch" method="POST">
+                        <input type="hidden" name="light_name" value="{{ light_name }}">
+                        <input type="hidden" name="is_on" value="{{ not is_on }}">
+                        <input class="btn blue-btn" type="submit", value="{{ submit_text }}">
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if found %}
+            <div class="section">
+                <h1 class="text-center">Change Colour</h1>
+                {% if color_capability %}
+                <div class="color-buttons">
+                    {% for color, rgb in light_colors.items() %}
+                    <form class="text-center" action="/lightcolor" method="POST">
+                        <input type="hidden" name="light_name" value="{{ light_name }}">
+                        <input type="hidden" name="red" value="{{ rgb[0] }}">
+                        <input type="hidden" name="green" value="{{ rgb[1] }}">
+                        <input type="hidden" name="blue" value="{{ rgb[2] }}">
+                        <input class="btn blue-btn col-btn" type="submit" value="{{ color.title() }}">
+                    </form>
+                    {% endfor %}
+                </div>
+                <form class="text-center" action="/lightcolor" method="POST">
+                    <input type="hidden" name="light_name" value="{{ light_name }}">
+                    <div class="row">
+                        <div class="color-input col-sm-4 mb-2">
+                            <label for="red">R:</label>
+                            <input type="number" name="red">
+                        </div>
+                        <div class="color-input col-sm-4 mb-2">
+                            <label for="green">G:</label>
+                            <input type="number" name="green">
+                        </div>
+                        <div class="color-input col-sm-4 mb-2">
+                            <label for="blue">B:</label>
+                            <input type="number" name="blue">
+                        </div>
+                    </div>
+                    <input type="submit" value="Go!">
+                </form>
+            </div>
+            {% else %}
+            <p class="error">This light does not have colour changing capability.</p>
+            {% endif %}
+            <div class="section">
+                <h1 class="text-center">Change Name</h1>
+                <form class="text-center" action="/changename" method="POST">
+                    <input type="hidden" name="light_name" value="{{ light_name }}">
+                    <input class="mb-2" type="text" name="new_name">
+                    <input type="submit" value="Go!">
+                </form>
+            </div>
+            {% else %}
+            <p class="error">LIGHT NOT FOUND</p>
+            {% endif %}
+        </div>
+
+    </body>
+</html>

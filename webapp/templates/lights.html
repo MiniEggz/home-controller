@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    {% include "head.html" %}
+    <body>
+        {% include "header.html" %}
+
+        <div class="container">
+            <h1 class="title text-center">Lights</h1>
+            <div class="light-list">
+                {% for light_name, is_on in lights.items() %}
+                {% set submit_text = "Turn Off" if is_on else "Turn On" %}
+                <div class="menu-light card">
+                    <div class="card-body">
+                        <div class="row">
+                            <span class="light-name col-sm-4 text-center mb-2 mt-2 m-sm-0">{{ light_name }}</span>
+                            <form class="switch-form col-sm-4 text-center mb-2 mt-2 m-sm-0" action="/lightswitch" method="POST">
+                                <input type="hidden" name="light_name" value="{{ light_name }}">
+                                <input type="hidden" name="is_on" value="{{ not is_on }}">
+                                <input class="btn btn-light" type="submit", value="{{ submit_text }}">
+                            </form>
+                            <span class="col-sm-4 text-center mb-2 mt-2 m-sm-0"><a class="btn btn-light" href="/lights/{{ light_name }}">More</a></span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </body>
+</html>
